@@ -42,7 +42,8 @@ module "eks" {
     }
   }
 
-  create_aws_auth_configmap = true
+  # No need to create for EKS-managed node groups
+  create_aws_auth_configmap = false
   manage_aws_auth_configmap = true
 
   aws_auth_users = local.admin_users
