@@ -5,13 +5,25 @@ data "aws_iam_session_context" "current" {
   arn = data.aws_caller_identity.current.arn
 }
 
+data "aws_arn" "admin_arns" {
+  for_each = toset(var.admin_arns)
+  arn      = each.key
+}
+
 locals {
   admin_users = [
-    for i, arn in var.admin_arns : {
-      username = "user${i}"
-      userarn  = arn
+    for arn in data.aws_arn.admin_arns : {
+      username = "user${index(var.admin_arns, arn.arn)}"
+      userarn  = arn.arn
       groups   = ["system:masters"]
-    }
+    } if startswith(arn.resource, "user/")
+  ]
+  admin_roles = [
+    for arn in data.aws_arn.admin_arns : {
+      username = "role${index(var.admin_arns, arn.arn)}"
+      rolearn  = arn.arn
+      groups   = ["system:masters"]
+    } if startswith(arn.resource, "role/")
   ]
 }
 
@@ -47,9 +59,12 @@ module "eks" {
   manage_aws_auth_configmap = true
 
   aws_auth_users = local.admin_users
+  aws_auth_roles = local.admin_roles
+
   kms_key_administrators = concat(
     [data.aws_iam_session_context.current.issuer_arn],
-    [for user in local.admin_users : user.userarn]
+    [for user in local.admin_users : user.userarn],
+    [for role in local.admin_roles : role.rolearn]
   )
 
   eks_managed_node_groups = {

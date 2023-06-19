@@ -1,5 +1,5 @@
 variable "admin_arns" {
-  description = "IAM principal ARNs to be granted admin access to cluster and its KMS key"
+  description = "IAM principal ARNs (users or roles) to be granted admin access to cluster and its KMS key"
   type        = list(string)
 }
 
