@@ -1,8 +1,3 @@
-variable "admin_arns" {
-  description = "IAM principal ARNs (users or roles) to be granted admin access to cluster and its KMS key"
-  type        = list(string)
-}
-
 variable "region" {
   description = "AWS region"
   type        = string
@@ -12,6 +7,16 @@ variable "common_tags" {
   description = "Common tags for all resources"
   type        = map(string)
   default     = {}
+}
+
+variable "environment" {
+  description = "Environment type (one of: dev, stage, prod)"
+  type        = string
+  default     = "dev"
+  validation {
+    condition     = contains(["dev", "stage", "prod"], var.environment)
+    error_message = "Incorrect environment type."
+  }
 }
 
 variable "vpc_cidr" {
@@ -55,4 +60,9 @@ variable "cluster_max_size" {
   description = "Maximium number of node instances"
   type        = number
   default     = 1
+}
+
+variable "admin_arns" {
+  description = "IAM principal ARNs (users or roles) to be granted admin access to cluster and its KMS key"
+  type        = list(string)
 }

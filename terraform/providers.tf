@@ -5,7 +5,7 @@ provider "aws" {
   default_tags {
     tags = merge(var.common_tags, {
       Terraform   = true
-      Environment = "poc"
+      Environment = var.environment
     })
   }
 }
