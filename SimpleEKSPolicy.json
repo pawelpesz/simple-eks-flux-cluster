@@ -1,0 +1,108 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "eks:*",
+                "iam:List*",
+                "iam:GetRole",
+                "iam:GetPolicy",
+                "kms:CreateKey",
+                "kms:DescribeKey",
+                "kms:DisableKey",
+                "kms:DisableKeyRotation",
+                "kms:EnableKey",
+                "kms:EnableKeyRotation",
+                "kms:ListAliases",
+                "kms:ListKeys",
+                "kms:PutKeyPolicy",
+                "kms:ScheduleKeyDeletion",
+                "kms:TagResource",
+                "kms:UntagResource",
+                "kms:UpdateKeyDescription"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:AttachRolePolicy",
+                "iam:CreateOpenIDConnectProvider",
+                "iam:CreatePolicy",
+                "iam:CreatePolicyVersion",
+                "iam:CreateRole",
+                "iam:DeleteOpenIDConnectProvider",
+                "iam:DeletePolicy",
+                "iam:DeletePolicyVersion",
+                "iam:DeleteRole",
+                "iam:DeleteRolePolicy",
+                "iam:DeleteServiceLinkedRole",
+                "iam:DetachRolePolicy",
+                "iam:GetOpenIDConnectProvider",
+                "iam:GetPolicyVersion",
+                "iam:GetRolePolicy",
+                "iam:PutRolePolicy",
+                "iam:TagOpenIDConnectProvider",
+                "iam:TagPolicy",
+                "iam:TagRole",
+                "iam:UntagOpenIDConnectProvider",
+                "iam:UntagPolicy",
+                "iam:UntagRole",
+                "iam:UpdateAssumeRolePolicy"
+            ],
+            "Resource": [
+                "arn:aws:iam::*:oidc-provider/*",
+                "arn:aws:iam::*:policy/simple-cluster-*",
+                "arn:aws:iam::*:role/simple-cluster-*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": "iam:PassRole",
+            "Resource": "*",
+            "Condition": {
+                "ForAnyValue:StringLike": {
+                    "iam:PassedToService": [
+                        "eks.amazonaws.com",
+                        "eks-nodegroup.amazonaws.com",
+                        "ec2.amazonaws.com",
+                        "autoscaling.amazonaws.com"
+                    ]
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": "iam:CreateServiceLinkedRole",
+            "Resource": "*",
+            "Condition": {
+                "ForAnyValue:StringEquals": {
+                    "iam:AWSServiceName": [
+                        "eks.amazonaws.com",
+                        "eks-nodegroup.amazonaws.com"
+                    ]
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": "logs:DescribeLogGroups",
+            "Resource": "arn:aws:logs:*:*:log-group:*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "logs:*",
+            "Resource": "arn:aws:logs:*:*:log-group:/aws/eks/*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kms:CreateAlias",
+                "kms:DeleteAlias",
+                "kms:UpdateAlias"
+            ],
+            "Resource": "arn:aws:kms:*:*:alias/eks/*"
+        }
+    ]
+}
