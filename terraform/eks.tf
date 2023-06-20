@@ -21,8 +21,9 @@ locals {
   admin_roles = [
     for arn in data.aws_arn.admin_arns : {
       username = "role${index(var.admin_arns, arn.arn)}"
-      rolearn  = arn.arn
-      groups   = ["system:masters"]
+      # See: https://repost.aws/knowledge-center/eks-configure-sso-user
+      rolearn = replace(arn.arn, "/aws-reserved\\/sso\\.amazonaws\\.com\\/([[:alnum:]-]+)\\//", "")
+      groups  = ["system:masters"]
     } if startswith(arn.resource, "role/")
   ]
 }
@@ -63,8 +64,7 @@ module "eks" {
 
   kms_key_administrators = concat(
     [data.aws_iam_session_context.current.issuer_arn],
-    [for user in local.admin_users : user.userarn],
-    [for role in local.admin_roles : role.rolearn]
+    var.admin_arns
   )
 
   eks_managed_node_groups = {
