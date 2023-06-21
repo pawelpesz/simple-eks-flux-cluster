@@ -66,3 +66,53 @@ variable "admin_arns" {
   description = "IAM principal ARNs (users or roles) to be granted admin access to cluster and its KMS key"
   type        = list(string)
 }
+
+variable "github_owner" {
+  description = "GitHub repository owner"
+  type        = string
+}
+
+variable "github_token" {
+  description = "GitHub fine-grained token with read access to metadata and *read/write* access to code"
+  type        = string
+  sensitive   = true
+}
+
+variable "github_repo_url" {
+  description = "Overwrite the repository URL (otherwise it will be calculated using the GH owner and Terraform workspace)"
+  type        = string
+  default     = null
+}
+
+variable "flux_target_base_path" {
+  description = "Base path for Flux (environment will be appended to it)"
+  type        = string
+  default     = "clusters"
+}
+
+variable "flux_version" {
+  description = "Flux version"
+  type        = string
+  default     = "v2.0.0-rc.5"
+}
+
+variable "flux_components_extra" {
+  description = "Flux extra toolkit components to bootstrap"
+  type        = set(string)
+  default = [
+    "image-reflector-controller",
+    "image-automation-controller"
+  ]
+}
+
+variable "flux_interval" {
+  description = "Interval at which to reconcile from Flux bootstrap repository"
+  type        = string
+  default     = "1m0s"
+}
+
+variable "flux_log_level" {
+  description = "Log level for Flux toolkit components"
+  type        = string
+  default     = "info"
+}
