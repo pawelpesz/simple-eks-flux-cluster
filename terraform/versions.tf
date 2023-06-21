@@ -9,6 +9,10 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "~> 2.21"
     }
+    flux = {
+      source  = "fluxcd/flux"
+      version = "1.0.0-rc.5"
+    }
   }
   cloud {
     # organization from TF_CLOUD_ORGANIZATION
