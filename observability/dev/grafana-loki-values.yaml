@@ -1,0 +1,33 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: loki-stack
+  namespace: observability
+spec:
+  chart:
+    spec:
+      version: "~>2.9"
+  values:
+    loki:
+      enabled: true
+      replicas: 1
+      isDefault: false # To avoid clashing with Prometheus, the default data source
+      serviceMonitor:
+        enabled: true
+        interval: 30s
+        additionalLabels:
+          tier: cluster
+    promtail:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        interval: 30s
+        additionalLabels:
+          tier: cluster
+    fluent-bit:
+      enabled: false
+    grafana:
+      enabled: false
+    prometheus:
+      enabled: false
