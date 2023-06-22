@@ -54,8 +54,8 @@ module "eks" {
       resolve_conflicts = "OVERWRITE"
       configuration_values = jsonencode({
         env = {
-          ENABLE_PREFIX_DELEGATION = true
-          WARM_PREFIX_TARGET       = 1
+          ENABLE_PREFIX_DELEGATION = "true"
+          WARM_PREFIX_TARGET       = "1"
         }
       })
     }
