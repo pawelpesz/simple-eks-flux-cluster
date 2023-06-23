@@ -88,6 +88,9 @@ module "eks" {
       instance_types       = var.instance_types
       capacity_type        = var.use_spot_instances ? "SPOT" : "ON_DEMAND"
       force_update_version = true
+
+      enable_bootstrap_user_data = true
+      bootstrap_extra_args       = "--use-max-pods false --kubelet-extra-args '--max-pods=${var.cluster_max_pods}'"
     }
   }
 }
