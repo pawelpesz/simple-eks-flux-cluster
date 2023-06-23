@@ -26,6 +26,20 @@ locals {
       groups  = ["system:masters"]
     } if startswith(arn.resource, "role/")
   ]
+  ami_filters = {
+    "AL2_x86_64" = "amazon-eks-node-${var.eks_version}-v*"
+    "AL2_ARM_64" = "amazon-eks-arm64-node-${var.eks_version}-v*"
+  }
+}
+
+data "aws_ami" "eks" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = [local.ami_filters[var.ami_type]]
+  }
 }
 
 module "eks" {
@@ -84,11 +98,11 @@ module "eks" {
       max_size     = var.cluster_max_size
       desired_size = 1
 
-      ami_type             = var.ami_type
       instance_types       = var.instance_types
       capacity_type        = var.use_spot_instances ? "SPOT" : "ON_DEMAND"
       force_update_version = true
 
+      ami_id                     = data.aws_ami.eks.id
       enable_bootstrap_user_data = true
       bootstrap_extra_args       = "--use-max-pods false --kubelet-extra-args '--max-pods=${var.cluster_max_pods}'"
     }

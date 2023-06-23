@@ -42,6 +42,10 @@ variable "ami_type" {
   description = "AMI type for node instances (should be aligned with `instance_types`)"
   type        = string
   default     = "AL2_ARM_64"
+  validation {
+    condition     = contains(["AL2_x86_64", "AL2_ARM_64"], var.ami_type)
+    error_message = "Unsupported AMI type."
+  }
 }
 
 variable "instance_types" {
