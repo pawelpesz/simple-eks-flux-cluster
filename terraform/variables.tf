@@ -62,6 +62,12 @@ variable "cluster_max_size" {
   default     = 1
 }
 
+variable "cluster_max_pods" {
+  description = "Maximium number of pods per node (run https://github.com/awslabs/amazon-eks-ami/blob/master/files/max-pods-calculator.sh with `--cni-prefix-delegation-enabled`)"
+  type        = number
+  default     = 110
+}
+
 variable "admin_arns" {
   description = "IAM principal ARNs (users or roles) to be granted admin access to cluster and its KMS key"
   type        = list(string)
