@@ -54,7 +54,9 @@
             "Resource": [
                 "arn:aws:iam::*:oidc-provider/*",
                 "arn:aws:iam::*:policy/simple-cluster-*",
-                "arn:aws:iam::*:role/simple-cluster-*"
+                "arn:aws:iam::*:policy/AmazonEKS_EBS_CSI_Policy-*",
+                "arn:aws:iam::*:role/simple-cluster-*",
+                "arn:aws:iam::*:role/ebs-csi-*"
             ]
         },
         {

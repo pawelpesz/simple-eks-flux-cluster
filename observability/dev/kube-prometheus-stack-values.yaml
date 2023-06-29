@@ -23,6 +23,14 @@ spec:
         podMonitorSelector:
           matchLabels:
             app.kubernetes.io/component: monitoring
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: gp2
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 10Gi
   # https://fluxcd.io/flux/components/helm/helmreleases/#drift-exclusion-example-prometheus-stack
   postRenderers:
     - kustomize:
