@@ -9,7 +9,7 @@ spec:
   prune: true
   dependsOn:
     - name: observability
-      namespace: flux-monitoring
+      namespace: flux-system
   sourceRef:
     kind: GitRepository
     name: flux-monitoring
