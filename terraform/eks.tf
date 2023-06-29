@@ -128,23 +128,3 @@ module "ebs_csi_irsa_role" {
     }
   }
 }
-
-resource "kubernetes_storage_class_v1" "ebs" {
-  metadata {
-    name = "ebs-sc"
-    annotations = {
-      "storageclass.kubernetes.io/is-default-class" = "true"
-    }
-  }
-
-  storage_provisioner    = "ebs.csi.aws.com"
-  volume_binding_mode    = "WaitForFirstConsumer"
-  allow_volume_expansion = true
-
-  parameters = {
-    type      = var.ebs_storage_type
-    encrypted = "true"
-  }
-
-  depends_on = [module.eks.cluster_addons]
-}
