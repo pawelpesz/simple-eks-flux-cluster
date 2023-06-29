@@ -65,13 +65,18 @@ module "eks" {
     }
     vpc-cni = {
       most_recent       = true
-      resolve_conflicts = "OVERWRITE"
+      resolve_conflicts = "PRESERVE"
       configuration_values = jsonencode({
         env = {
           ENABLE_PREFIX_DELEGATION = "true"
           WARM_PREFIX_TARGET       = "1"
         }
       })
+    }
+    aws-ebs-csi-driver = {
+      most_recent              = true
+      resolve_conflicts        = "PRESERVE"
+      service_account_role_arn = module.ebs_csi_irsa_role.iam_role_arn
     }
   }
 
@@ -105,6 +110,21 @@ module "eks" {
       ami_id                     = data.aws_ami.eks.id
       enable_bootstrap_user_data = true
       bootstrap_extra_args       = "--use-max-pods false --kubelet-extra-args '--max-pods=${var.cluster_max_pods}'"
+    }
+  }
+}
+
+module "ebs_csi_irsa_role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.22"
+
+  role_name_prefix      = "ebs-csi-"
+  attach_ebs_csi_policy = true
+
+  oidc_providers = {
+    ex = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
     }
   }
 }
