@@ -72,6 +72,12 @@ variable "cluster_max_pods" {
   default     = 110
 }
 
+variable "ebs_storage_type" {
+  description = "Storage type for Amazon EBS CSI driver"
+  type        = string
+  default     = "gp3"
+}
+
 variable "admin_arns" {
   description = "IAM principal ARNs (users or roles) to be granted admin access to cluster and its KMS key"
   type        = list(string)

@@ -65,13 +65,18 @@ module "eks" {
     }
     vpc-cni = {
       most_recent       = true
-      resolve_conflicts = "OVERWRITE"
+      resolve_conflicts = "PRESERVE"
       configuration_values = jsonencode({
         env = {
           ENABLE_PREFIX_DELEGATION = "true"
           WARM_PREFIX_TARGET       = "1"
         }
       })
+    }
+    aws-ebs-csi-driver = {
+      most_recent              = true
+      resolve_conflicts        = "PRESERVE"
+      service_account_role_arn = module.ebs_csi_irsa_role.iam_role_arn
     }
   }
 
@@ -107,4 +112,39 @@ module "eks" {
       bootstrap_extra_args       = "--use-max-pods false --kubelet-extra-args '--max-pods=${var.cluster_max_pods}'"
     }
   }
+}
+
+module "ebs_csi_irsa_role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.22"
+
+  role_name_prefix      = "ebs-csi"
+  attach_ebs_csi_policy = true
+
+  oidc_providers = {
+    ex = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
+    }
+  }
+}
+
+resource "kubernetes_storage_class_v1" "ebs" {
+  metadata {
+    name = "ebs-sc"
+    annotations = {
+      "storageclass.kubernetes.io/is-default-class" = "true"
+    }
+  }
+
+  storage_provisioner    = "ebs.csi.aws.com"
+  volume_binding_mode    = "WaitForFirstConsumer"
+  allow_volume_expansion = true
+
+  parameters = {
+    type      = var.ebs_storage_type
+    encrypted = "true"
+  }
+
+  depends_on = [module.eks.cluster_addons]
 }
