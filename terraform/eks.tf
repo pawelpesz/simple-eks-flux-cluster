@@ -65,7 +65,7 @@ module "eks" {
     }
     vpc-cni = {
       most_recent       = true
-      resolve_conflicts = "PRESERVE"
+      resolve_conflicts = "OVERWRITE"
       configuration_values = jsonencode({
         env = {
           ENABLE_PREFIX_DELEGATION = "true"
