@@ -26,7 +26,8 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              accessModes: ["ReadWriteOnce"]
+              storageClassName: efs
+              accessModes: ["ReadWriteMany"]
               resources:
                 requests:
                   storage: 10Gi
@@ -34,7 +35,8 @@ spec:
       persistence:
         type: pvc
         enabled: true
-        accessModes: ["ReadWriteOnce"]
+        storageClassName: efs
+        accessModes: ["ReadWriteMany"]
         size: 10Gi
   # https://fluxcd.io/flux/components/helm/helmreleases/#drift-exclusion-example-prometheus-stack
   postRenderers:
