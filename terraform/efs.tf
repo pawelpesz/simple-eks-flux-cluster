@@ -66,6 +66,7 @@ resource "helm_release" "efs_csi_driver" {
   set {
     name  = "storageClasses[0].parameters.directoryPerms"
     value = "700"
+    type  = "string"
   }
   depends_on = [module.eks.cluster_addons]
 }
