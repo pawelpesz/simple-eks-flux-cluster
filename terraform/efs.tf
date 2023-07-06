@@ -38,11 +38,15 @@ module "efs_csi_irsa_role" {
 }
 
 resource "helm_release" "efs_csi_driver" {
-  name       = "aws-efs-csi-driver"
-  repository = "https://kubernetes-sigs.github.io/aws-efs-csi-driver/"
-  chart      = "aws-efs-csi-driver"
-  namespace  = "kube-system"
-  version    = "2.4.6"
+  name            = "aws-efs-csi-driver"
+  repository      = "https://kubernetes-sigs.github.io/aws-efs-csi-driver/"
+  chart           = "aws-efs-csi-driver"
+  namespace       = "kube-system"
+  version         = "2.4.6"
+  atomic          = true
+  force_update    = true
+  cleanup_on_fail = true
+  reset_values    = true
   set {
     name  = "controller.serviceAccount.eks\\.amazonaws\\.com/role-arn"
     value = module.efs_csi_irsa_role.iam_role_arn
