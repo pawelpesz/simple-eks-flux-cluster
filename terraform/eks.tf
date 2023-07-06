@@ -73,11 +73,6 @@ module "eks" {
         }
       })
     }
-    aws-ebs-csi-driver = {
-      most_recent              = true
-      resolve_conflicts        = "PRESERVE"
-      service_account_role_arn = module.ebs_csi_irsa_role.iam_role_arn
-    }
   }
 
   # No need to create for EKS-managed node groups
@@ -92,6 +87,9 @@ module "eks" {
     var.admin_arns
   )
 
+  eks_managed_node_group_defaults = {
+    vpc_security_group_ids = [module.efs.security_group_id]
+  }
   eks_managed_node_groups = {
     default = {
       name                            = var.cluster_name
@@ -110,21 +108,6 @@ module "eks" {
       ami_id                     = data.aws_ami.eks.id
       enable_bootstrap_user_data = true
       bootstrap_extra_args       = "--use-max-pods false --kubelet-extra-args '--max-pods=${var.cluster_max_pods}'"
-    }
-  }
-}
-
-module "ebs_csi_irsa_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.22"
-
-  role_name_prefix      = "ebs-csi-"
-  attach_ebs_csi_policy = true
-
-  oidc_providers = {
-    ex = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
     }
   }
 }
