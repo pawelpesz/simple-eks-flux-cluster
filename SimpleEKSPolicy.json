@@ -54,9 +54,9 @@
             "Resource": [
                 "arn:aws:iam::*:oidc-provider/*",
                 "arn:aws:iam::*:policy/simple-cluster-*",
-                "arn:aws:iam::*:policy/AmazonEKS_EFS_CSI_Policy-*",
+                "arn:aws:iam::*:policy/AmazonEKS_EBS_CSI_Policy-*",
                 "arn:aws:iam::*:role/simple-cluster-*",
-                "arn:aws:iam::*:role/efs-csi-*"
+                "arn:aws:iam::*:role/ebs-csi-*"
             ]
         },
         {
@@ -82,8 +82,7 @@
                 "ForAnyValue:StringEquals": {
                     "iam:AWSServiceName": [
                         "eks.amazonaws.com",
-                        "eks-nodegroup.amazonaws.com",
-                        "elasticfilesystem.amazonaws.com"
+                        "eks-nodegroup.amazonaws.com"
                     ]
                 }
             }
@@ -106,6 +105,16 @@
                 "kms:UpdateAlias"
             ],
             "Resource": "arn:aws:kms:*:*:alias/eks/*"
-        }
+        },
+        {
+			"Effect": "Allow",
+			"Action": "elasticfilesystem:*",
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"aws:RequestTag/Purpose": "eks-poc"
+				}
+			}
+		}
     ]
 }
