@@ -55,10 +55,6 @@ resource "helm_release" "efs_csi_driver" {
     name  = "storageClasses[0].name"
     value = "efs"
   }
-  set_list {
-    name  = "storageClasses[0].mountOptions"
-    value = ["tls"]
-  }
   set {
     name  = "storageClasses[0].parameters.provisioningMode"
     value = "efs-ap"
