@@ -105,6 +105,16 @@
                 "kms:UpdateAlias"
             ],
             "Resource": "arn:aws:kms:*:*:alias/eks/*"
-        }
+        },
+        {
+			"Effect": "Allow",
+			"Action": "elasticfilesystem:*",
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"aws:RequestTag/Purpose": "eks-poc"
+				}
+			}
+		}
     ]
 }
