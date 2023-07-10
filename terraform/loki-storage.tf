@@ -6,7 +6,8 @@ module "s3_loki" {
   acl    = "private"
 
   control_object_ownership = true
-  object_ownership         = "BucketOwnerEnforced"
+  object_ownership         = "ObjectWriter"
+  force_destroy            = true
 }
 
 data "aws_iam_policy_document" "loki_s3_iam_policy" {
