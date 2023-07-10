@@ -55,10 +55,7 @@
             "Resource": [
                 "arn:aws:iam::*:oidc-provider/*",
                 "arn:aws:iam::*:policy/AmazonEKS_EBS_CSI_Policy-*",
-                "arn:aws:iam::*:policy/loki-storage-*",
                 "arn:aws:iam::*:policy/simple-cluster-*",
-                "arn:aws:iam::*:role/ebs-csi-*",
-                "arn:aws:iam::*:role/loki-storage-*",
                 "arn:aws:iam::*:role/simple-cluster-*"
             ]
         },
