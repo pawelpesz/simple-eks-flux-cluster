@@ -5,5 +5,8 @@ resource "flux_bootstrap_git" "flux" {
   interval               = var.flux_interval
   log_level              = var.flux_log_level
   kustomization_override = file("${path.module}/kustomization.yaml")
-  depends_on             = [module.eks.cluster_addons]
+  depends_on = [
+    module.eks.cluster_addons,
+    module.loki_irsa_role.iam_role_arn
+  ]
 }

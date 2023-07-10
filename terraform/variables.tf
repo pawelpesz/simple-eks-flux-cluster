@@ -126,3 +126,15 @@ variable "flux_log_level" {
   type        = string
   default     = "info"
 }
+
+variable "loki_s3_bucket_name" {
+  description = "S3 bucket name for Loki storage"
+  type        = string
+  default     = "loki-storage-simple-cluster-x7g9k3"
+}
+
+variable "loki_serviceaccount_name" {
+  description = "Loki K8s service account name"
+  type        = string
+  default     = "loki-stack"
+}
