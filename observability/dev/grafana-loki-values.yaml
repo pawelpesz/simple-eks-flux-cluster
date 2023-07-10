@@ -17,6 +17,19 @@ spec:
         interval: 30s
         additionalLabels:
           tier: cluster
+      persistence:
+        enabled: true
+      serviceAccount:
+        annotations:
+          "eks.amazonaws.com/role-arn": "arn:aws:iam::537928299818:role/simple-cluster-loki-storage"
+      storage:
+        type: "s3"
+        s3:
+          region: eu-north-1
+        bucketNames:
+          chunks: loki-storage-simple-cluster-x7g9k3
+          ruler: loki-storage-simple-cluster-x7g9k3
+          admin: loki-storage-simple-cluster-x7g9k3
     promtail:
       enabled: true
       serviceMonitor:
