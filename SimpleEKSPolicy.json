@@ -5,9 +5,9 @@
             "Effect": "Allow",
             "Action": [
                 "eks:*",
-                "iam:List*",
-                "iam:GetRole",
                 "iam:GetPolicy",
+                "iam:GetRole",
+                "iam:List*",
                 "kms:CreateKey",
                 "kms:DescribeKey",
                 "kms:DisableKey",
@@ -20,7 +20,8 @@
                 "kms:ScheduleKeyDeletion",
                 "kms:TagResource",
                 "kms:UntagResource",
-                "kms:UpdateKeyDescription"
+                "kms:UpdateKeyDescription",
+                "s3:ListAllMyBuckets"
             ],
             "Resource": "*"
         },
@@ -53,10 +54,12 @@
             ],
             "Resource": [
                 "arn:aws:iam::*:oidc-provider/*",
-                "arn:aws:iam::*:policy/simple-cluster-*",
                 "arn:aws:iam::*:policy/AmazonEKS_EBS_CSI_Policy-*",
-                "arn:aws:iam::*:role/simple-cluster-*",
-                "arn:aws:iam::*:role/ebs-csi-*"
+                "arn:aws:iam::*:policy/loki-storage-*",
+                "arn:aws:iam::*:policy/simple-cluster-*",
+                "arn:aws:iam::*:role/ebs-csi-*",
+                "arn:aws:iam::*:role/loki-storage-*",
+                "arn:aws:iam::*:role/simple-cluster-*"
             ]
         },
         {
@@ -105,6 +108,14 @@
                 "kms:UpdateAlias"
             ],
             "Resource": "arn:aws:kms:*:*:alias/eks/*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::loki-storage-simple-cluster-x7g9k3",
+                "arn:aws:s3:::loki-storage-simple-cluster-x7g9k3/*"
+            ]
         }
     ]
 }
