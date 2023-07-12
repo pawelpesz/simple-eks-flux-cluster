@@ -103,7 +103,7 @@ variable "flux_target_base_path" {
 variable "flux_version" {
   description = "Flux version"
   type        = string
-  default     = "v2.0.0"
+  default     = "v2.0.1"
 }
 
 variable "flux_components_extra" {
