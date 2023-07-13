@@ -19,6 +19,8 @@ spec:
           tier: cluster
       persistence:
         enabled: true
+      tracing:
+        enabled: true
       serviceAccount:
         annotations:
           "eks.amazonaws.com/role-arn": "arn:aws:iam::537928299818:role/simple-cluster-loki-storage"
@@ -40,8 +42,9 @@ spec:
             shared_store: s3
             cache_ttl: 24h
           aws:
-            s3: s3://eu-north-1/loki-storage-simple-cluster-x7g9k3
-            s3forcepathstyle: true
+            region: eu-north-1
+            bucketnames: loki-storage-simple-cluster-x7g9k3
+            s3forcepathstyle: false
         compactor:
           working_directory: /loki/compactor
           shared_store: s3
