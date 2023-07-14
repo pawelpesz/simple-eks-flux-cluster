@@ -19,16 +19,15 @@ spec:
           tier: cluster
       persistence:
         enabled: true
-      tracing:
-        enabled: true
       serviceAccount:
+        create: true
+        name: loki-stack
         annotations:
           "eks.amazonaws.com/role-arn": "arn:aws:iam::537928299818:role/simple-cluster-loki-storage"
       config:
         schema_config:
           configs:
-          # Arbitrary date in the past
-          - from: "2023-01-01"
+          - from: "2023-01-01" # Arbitrary date in the past
             store: boltdb-shipper
             object_store: s3
             schema: v11
