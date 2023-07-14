@@ -2,9 +2,12 @@ module "s3_loki" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "~> 3.0"
 
-  bucket        = var.loki_s3_bucket_name
-  acl           = "private"
-  force_destroy = true
+  bucket = var.loki_s3_bucket_name
+  acl    = "private"
+
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
+  force_destroy            = true
 }
 
 data "aws_iam_policy_document" "loki_s3_iam_policy" {
