@@ -54,6 +54,10 @@ module "eks" {
   cluster_version                = var.eks_version
   cluster_endpoint_public_access = true
 
+  cluster_enabled_log_types              = var.cluster_enabled_log_types
+  create_cloudwatch_log_group            = true
+  cloudwatch_log_group_retention_in_days = var.cluster_logs_retention
+
   cluster_addons = {
     coredns = {
       most_recent       = true

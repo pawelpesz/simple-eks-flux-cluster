@@ -72,6 +72,18 @@ variable "cluster_max_pods" {
   default     = 110
 }
 
+variable "cluster_enabled_log_types" {
+  description = "List of desired control plane logs to enable"
+  type        = list(string)
+  default     = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+}
+
+variable "cluster_logs_retention" {
+  description = "Number of days to retain log events"
+  type        = number
+  default     = 7
+}
+
 variable "admin_arns" {
   description = "IAM principal ARNs (users or roles) to be granted admin access to cluster and its KMS key"
   type        = list(string)
