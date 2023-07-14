@@ -20,8 +20,6 @@ spec:
       persistence:
         enabled: true
       serviceAccount:
-        create: true
-        name: loki-stack
         annotations:
           "eks.amazonaws.com/role-arn": "arn:aws:iam::537928299818:role/simple-cluster-loki-storage"
       config:
@@ -36,8 +34,6 @@ spec:
               period: 24h
         storage_config:
           boltdb_shipper:
-            active_index_directory: /loki/index
-            cache_location: /loki/index_cache
             shared_store: s3
             cache_ttl: 24h
           aws:
@@ -45,7 +41,6 @@ spec:
             bucketnames: loki-storage-simple-cluster-x7g9k3
             s3forcepathstyle: false
         compactor:
-          working_directory: /loki/compactor
           shared_store: s3
           compaction_interval: 5m
     promtail:
