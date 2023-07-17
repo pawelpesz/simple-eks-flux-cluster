@@ -28,7 +28,7 @@ spec:
           - from: "2023-01-01" # Arbitrary date in the past
             store: boltdb-shipper
             object_store: s3
-            schema: v11
+            schema: v12
             index:
               prefix: index_
               period: 24h
