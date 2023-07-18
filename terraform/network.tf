@@ -44,8 +44,8 @@ module "vpc_endpoints" {
   vpc_id = module.vpc.vpc_id
 
   create_security_group      = true
-  security_group_name_prefix = "${var.cluster_name}-vpc-endpoints-"
-  security_group_description = "VPC endpoint security group"
+  security_group_name        = "${var.cluster_name}-vpc-endpoints"
+  security_group_description = "VPC Endpoints security group"
   security_group_rules = {
     ingress_https = {
       description = "HTTPS from VPC"
@@ -108,9 +108,10 @@ module "ec2_instance_connect_sg" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "~> 5.0"
 
-  name        = "${var.cluster_name}-ec2-instance-connect"
-  description = "Allow trafic from VPC Endpoint to VPC"
-  vpc_id      = module.vpc.vpc_id
+  name            = "${var.cluster_name}-ec2-instance-connect"
+  use_name_prefix = false
+  description     = "Allow traffic from EC2 Instance Connect VPC Endpoint to VPC"
+  vpc_id          = module.vpc.vpc_id
 
   egress_rules       = ["all-tcp"]
   egress_cidr_blocks = [module.vpc.vpc_cidr_block]
