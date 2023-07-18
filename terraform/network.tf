@@ -57,48 +57,70 @@ module "vpc_endpoints" {
   endpoints = {
     s3 = {
       service = "s3"
-      #tags    = { Name = "${var.cluster_name}-s3" }
-    },
+      tags    = { Name = "${var.cluster_name}-s3" }
+    }
     ec2 = {
       service             = "ec2"
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
-    },
+      tags                = { Name = "${var.cluster_name}-ec2" }
+    }
     ecr_api = {
       service             = "ecr.api"
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
-    },
+      tags                = { Name = "${var.cluster_name}-ecr-api" }
+    }
     ecr_dkr = {
       service             = "ecr.dkr"
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
-    },
+      tags                = { Name = "${var.cluster_name}-ecr-dkr" }
+    }
     elasticloadbalancing = {
       service             = "elasticloadbalancing"
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
-    },
+      tags                = { Name = "${var.cluster_name}-elasticloadbalancing" }
+    }
     logs = {
       service             = "logs"
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
-    },
+      tags                = { Name = "${var.cluster_name}-logs" }
+    }
     sts = {
       service             = "sts"
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
-    },
+      tags                = { Name = "${var.cluster_name}-sts" }
+    }
     kms = {
       service             = "kms"
       private_dns_enabled = true
       subnet_ids          = module.vpc.private_subnets
+      tags                = { Name = "${var.cluster_name}-kms" }
     }
   }
 }
 
+module "ec2_instance_connect_sg" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~> 5.0"
+
+  name        = "${var.cluster_name}-ec2-instance-connect"
+  description = "Allow trafic from VPC Endpoint to VPC"
+  vpc_id      = module.vpc.vpc_id
+
+  egress_rules       = ["all-tcp"]
+  egress_cidr_blocks = [module.vpc.vpc_cidr_block]
+}
+
 resource "aws_ec2_instance_connect_endpoint" "endpoint" {
-  for_each           = toset(module.vpc.private_subnets)
-  subnet_id          = each.key
+  subnet_id          = module.vpc.private_subnets[0]
   preserve_client_ip = true
+  security_group_ids = [module.ec2_instance_connect_sg.security_group_id]
+  tags = {
+    Name = "${var.cluster_name}-ec2-instance-connect"
+  }
 }

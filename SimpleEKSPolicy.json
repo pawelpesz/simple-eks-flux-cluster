@@ -82,7 +82,8 @@
                 "ForAnyValue:StringEquals": {
                     "iam:AWSServiceName": [
                         "eks.amazonaws.com",
-                        "eks-nodegroup.amazonaws.com"
+                        "eks-nodegroup.amazonaws.com",
+                        "ec2-instance-connect.amazonaws.com"
                     ]
                 }
             }
