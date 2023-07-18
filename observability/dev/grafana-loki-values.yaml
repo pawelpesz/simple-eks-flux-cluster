@@ -12,8 +12,6 @@ spec:
     loki:
       enabled: true
       isDefault: false # To avoid clashing with Prometheus, the default data source
-      image:
-        tag: 2.8.2 # Overwrites 2.6.1
       serviceMonitor:
         enabled: true
         interval: 30s
@@ -28,14 +26,14 @@ spec:
         schema_config:
           configs:
           - from: "2023-01-01" # Arbitrary date in the past
-            store: tsdb
+            store: boltdb-shipper
             object_store: s3
             schema: v12
             index:
               prefix: index_
               period: 24h
         storage_config:
-          tsdb_shipper:
+          boltdb_shipper:
             shared_store: s3
             cache_ttl: 24h
           aws:
