@@ -96,6 +96,17 @@ module "eks" {
     var.admin_arns
   )
 
+  node_security_group_additional_rules = {
+    ingress_ec2_instance_connect = {
+      description              = "Ingress from EC2 Instance Connect VPC Endpoint"
+      protocol                 = "tcp"
+      from_port                = 22
+      to_port                  = 22
+      type                     = "ingress"
+      source_security_group_id = module.ec2_instance_connect_sg.security_group_id
+    }
+  }
+
   eks_managed_node_groups = {
     default = {
       name                            = var.cluster_name
