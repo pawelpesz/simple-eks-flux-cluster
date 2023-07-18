@@ -12,6 +12,8 @@ spec:
     loki:
       enabled: true
       isDefault: false # To avoid clashing with Prometheus, the default data source
+      image:
+        tag: 2.8.2 # Overwrites 2.6.1
       serviceMonitor:
         enabled: true
         interval: 30s
