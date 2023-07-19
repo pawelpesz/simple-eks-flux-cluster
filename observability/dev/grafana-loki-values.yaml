@@ -50,6 +50,26 @@ spec:
         interval: 30s
         additionalLabels:
           tier: cluster
+      extraVolumes:
+        - name: journal
+          hostPath:
+            path: /var/log/journal
+      extraVolumeMounts:
+        - name: journal
+          mountPath: /var/log/journal
+          readOnly: true
+      extraScrapeConfigs:
+        - job_name: journal
+          journal:
+            path: /var/log/journal
+            max_age: 12h
+            labels:
+              job: systemd-journal
+          relabel_configs:
+            - source_labels: ['__journal__systemd_unit']
+              target_label: 'unit'
+            - source_labels: ['__journal__hostname']
+              target_label: 'hostname'
     fluent-bit:
       enabled: false
     grafana:
