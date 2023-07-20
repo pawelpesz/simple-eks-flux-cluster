@@ -107,6 +107,9 @@ module "eks" {
     }
   }
 
+  eks_managed_node_group_defaults = {
+    vpc_security_group_ids = [module.efs.security_group_id]
+  }
   eks_managed_node_groups = {
     default = {
       name                            = var.cluster_name
