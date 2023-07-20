@@ -10,18 +10,3 @@ spec:
   sourceRef:
     kind: GitRepository
     name: aws-efs-csi-driver
-  patches:
-    - patch: |
-        - op: remove
-          path: /spec/template/spec/hostNetwork
-      target:
-        kind: DaemonSet
-        name: efs-csi-controller
-        namespace: kube-system
-    - patch: |
-        - op: remove
-          path: /spec/template/spec/hostNetwork
-      target:
-        kind: Deployment
-        name: efs-csi-controller
-        namespace: kube-system
