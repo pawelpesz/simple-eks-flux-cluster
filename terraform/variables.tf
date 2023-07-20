@@ -89,6 +89,12 @@ variable "admin_arns" {
   type        = list(string)
 }
 
+variable "efs_csi_irsa_role_name" {
+  description = "Name for the IAM EFS CSI Driver IRSA role"
+  type        = string
+  default     = "simple-cluster-efs-csi"
+}
+
 variable "github_owner" {
   description = "GitHub repository owner"
   type        = string
