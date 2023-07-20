@@ -9,6 +9,10 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "~> 2.22"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.10"
+    }
     flux = {
       source  = "fluxcd/flux"
       version = "~> 1.0"
