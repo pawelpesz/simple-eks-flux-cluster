@@ -24,7 +24,7 @@ spec:
         namespace: kube-system
     - patch: |
         - op: add
-          path: /metadata/annotations/eks\\.amazonaws\\.com/role-arn
+          path: /metadata/annotations/eks.amazonaws.com~1role-arn
           value: arn:aws:iam::537928299818:role/simple-cluster-efs-csi
       target:
         kind: ServiceAccount
