@@ -1,0 +1,20 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: aws-efs-csi-driver
+spec:
+  interval: 1h
+  path: ./deploy/kubernetes/overlays/stable/
+  targetNamespace: kube-system
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: aws-efs-csi-driver
+  patches:
+    - patch: |
+        - op: delete
+          path: /spec/template/spec/hostNetwork
+      target:
+        kind: DaemonSet
+        name: efs-csi-controller
+        namespace: kube-system
