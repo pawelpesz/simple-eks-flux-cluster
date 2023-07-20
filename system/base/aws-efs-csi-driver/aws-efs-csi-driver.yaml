@@ -18,3 +18,10 @@ spec:
         kind: DaemonSet
         name: efs-csi-controller
         namespace: kube-system
+    - patch: |
+        - op: delete
+          path: /spec/template/spec/hostNetwork
+      target:
+        kind: Deployment
+        name: efs-csi-controller
+        namespace: kube-system
