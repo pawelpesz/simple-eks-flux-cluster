@@ -11,9 +11,30 @@ spec:
     - patch: |
         - op: remove
           path: /spec/template/spec/hostNetwork
+        - op: test
+          path: /spec/template/spec/containers/0/name
+          value: efs-plugin
+        - op: add
+          path: /spec/template/spec/containers/0/env/-
+          value:
+            name: AWS_USE_FIPS_ENDPOINT
+            value: "true"
       target:
         kind: DaemonSet
         name: efs-csi-node
+        namespace: kube-system
+    - patch: |
+        - op: test
+          path: /spec/template/spec/containers/0/name
+          value: efs-plugin
+        - op: add
+          path: /spec/template/spec/containers/0/env/-
+          value:
+            name: AWS_USE_FIPS_ENDPOINT
+            value: "true"
+      target:
+        kind: Deployment
+        name: efs-csi-controller
         namespace: kube-system
     - patch: |
         - op: add
