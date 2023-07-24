@@ -13,14 +13,14 @@ spec:
           path: /spec/template/spec/hostNetwork
       target:
         kind: DaemonSet
-        name: efs-csi-controller
+        name: efs-csi-node
         namespace: kube-system
     - patch: |
         - op: remove
           path: /spec/template/spec/hostNetwork
       target:
         kind: Deployment
-        name: efs-csi-node
+        name: efs-csi-controller
         namespace: kube-system
     - patch: |
         - op: add
