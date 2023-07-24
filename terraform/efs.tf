@@ -47,5 +47,6 @@ resource "kubernetes_storage_class_v1" "efs" {
     fileSystemId     = module.efs.id
     directoryPerms   = "700"
   }
-  depends_on = [flux_bootstrap_git.flux]
+  mount_options = ["iam"]
+  depends_on    = [flux_bootstrap_git.flux]
 }
