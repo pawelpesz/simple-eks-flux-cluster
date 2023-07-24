@@ -36,3 +36,16 @@ module "efs_csi_irsa_role" {
     }
   }
 }
+
+resource "kubernetes_storage_class_v1" "efs" {
+  metadata {
+    name = "efs"
+  }
+  storage_provisioner = "efs.csi.aws.com"
+  parameters = {
+    provisioningMode = "efs-ap"
+    fileSystemId     = module.efs.id
+    directoryPerms   = "700"
+  }
+  depends_on = [flux_bootstrap_git.flux]
+}

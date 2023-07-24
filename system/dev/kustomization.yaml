@@ -3,6 +3,6 @@ kind: Kustomization
 namespace: kube-system
 resources:
   - ../base/aws-efs-csi-driver
-  - storageclass.yaml
+#  - storageclass.yaml
 patches:
   - path: aws-efs-csi-driver-values.yaml
