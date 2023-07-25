@@ -8,33 +8,13 @@ metadata:
   namespace: kube-system
 spec:
   patches:
+    # https://github.com/kubernetes-sigs/aws-efs-csi-driver/issues/962
     - patch: |
         - op: remove
           path: /spec/template/spec/hostNetwork
-        - op: test
-          path: /spec/template/spec/containers/0/name
-          value: efs-plugin
-        - op: add
-          path: /spec/template/spec/containers/0/env/-
-          value:
-            name: AWS_USE_FIPS_ENDPOINT
-            value: "true"
       target:
         kind: DaemonSet
         name: efs-csi-node
-        namespace: kube-system
-    - patch: |
-        - op: test
-          path: /spec/template/spec/containers/0/name
-          value: efs-plugin
-        - op: add
-          path: /spec/template/spec/containers/0/env/-
-          value:
-            name: AWS_USE_FIPS_ENDPOINT
-            value: "true"
-      target:
-        kind: Deployment
-        name: efs-csi-controller
         namespace: kube-system
     - patch: |
         - op: add
@@ -42,5 +22,5 @@ spec:
           value: arn:aws:iam::537928299818:role/simple-cluster-efs-csi
       target:
         kind: ServiceAccount
-        name: efs-csi-controller-sa
+        name: efs-csi-(controller|node)-sa
         namespace: kube-system
