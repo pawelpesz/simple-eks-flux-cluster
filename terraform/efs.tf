@@ -31,8 +31,11 @@ module "efs_csi_irsa_role" {
 
   oidc_providers = {
     ex = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["kube-system:efs-csi-controller-sa"]
+      provider_arn = module.eks.oidc_provider_arn
+      namespace_service_accounts = [
+        "kube-system:efs-csi-controller-sa",
+        "kube-system:efs-csi-node-sa"
+      ]
     }
   }
 }
@@ -47,6 +50,5 @@ resource "kubernetes_storage_class_v1" "efs" {
     fileSystemId     = module.efs.id
     directoryPerms   = "700"
   }
-  mount_options = ["iam"]
-  depends_on    = [flux_bootstrap_git.flux]
+  depends_on = [flux_bootstrap_git.flux]
 }
