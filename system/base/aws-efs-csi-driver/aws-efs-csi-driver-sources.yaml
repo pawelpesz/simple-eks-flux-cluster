@@ -1,9 +1,0 @@
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: GitRepository
-metadata:
-  name: aws-efs-csi-driver
-spec:
-  interval: 30m
-  ref:
-    branch: master
-  url: https://github.com/kubernetes-sigs/aws-efs-csi-driver

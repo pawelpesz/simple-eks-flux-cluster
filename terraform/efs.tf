@@ -40,15 +40,31 @@ module "efs_csi_irsa_role" {
   }
 }
 
-resource "kubernetes_storage_class_v1" "efs" {
-  metadata {
-    name = "efs"
+resource "helm_release" "efs_csi_driver" {
+  name       = "aws-efs-csi-driver"
+  repository = "https://kubernetes-sigs.github.io/aws-efs-csi-driver/"
+  chart      = "aws-efs-csi-driver"
+  namespace  = "kube-system"
+  version    = "2.4.9"
+  set {
+    name  = "controller.serviceAccount.eks\\.amazonaws\\.com/role-arn"
+    value = module.efs_csi_irsa_role.iam_role_arn
   }
-  storage_provisioner = "efs.csi.aws.com"
-  parameters = {
-    provisioningMode = "efs-ap"
-    fileSystemId     = module.efs.id
-    directoryPerms   = "700"
+  set {
+    name  = "storageClasses[0].name"
+    value = "efs"
   }
-  depends_on = [flux_bootstrap_git.flux]
+  set {
+    name  = "storageClasses[0].parameters.provisioningMode"
+    value = "efs-ap"
+  }
+  set {
+    name  = "storageClasses[0].parameters.fileSystemId"
+    value = module.efs.id
+  }
+  set {
+    name  = "storageClasses[0].parameters.directoryPerms"
+    value = "700"
+  }
+  depends_on = [module.eks.cluster_addons]
 }
