@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "loki_s3_iam_policy" {
 
 module "loki_s3_iam_policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
-  version = "~> 5.27"
+  version = "~> 5.29"
 
   name_prefix = "${var.cluster_name}-loki-storage-"
   description = "Loki S3 storage policy"
@@ -36,7 +36,7 @@ module "loki_s3_iam_policy" {
 
 module "loki_irsa_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.27"
+  version = "~> 5.29"
 
   role_name = "${var.cluster_name}-loki-storage"
   role_policy_arns = {

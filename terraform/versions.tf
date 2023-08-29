@@ -3,15 +3,15 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.8"
+      version = "~> 5.14"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2.22"
+      version = "~> 2.23"
     }
     flux = {
       source  = "fluxcd/flux"
-      version = "~> 1.0"
+      version = "~> 1.1"
     }
   }
   cloud {

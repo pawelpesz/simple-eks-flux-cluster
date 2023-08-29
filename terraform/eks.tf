@@ -44,7 +44,7 @@ data "aws_ami" "eks" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.15"
+  version = "~> 19.16"
 
   vpc_id                   = module.vpc.vpc_id
   subnet_ids               = module.vpc.private_subnets
@@ -134,7 +134,7 @@ module "eks" {
 
 module "ebs_csi_irsa_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.27"
+  version = "~> 5.29"
 
   role_name_prefix      = "${var.cluster_name}-ebs-csi-"
   attach_ebs_csi_policy = true
