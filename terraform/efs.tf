@@ -47,7 +47,11 @@ resource "helm_release" "efs_csi_driver" {
   namespace  = "kube-system"
   version    = "2.4.9"
   set {
-    name  = "controller.serviceAccount.eks\\.amazonaws\\.com/role-arn"
+    name  = "controller.serviceAccount.annotations[0].eks\\.amazonaws\\.com/role-arn"
+    value = module.efs_csi_irsa_role.iam_role_arn
+  }
+  set {
+    name  = "node.serviceAccount.annotations[0].eks\\.amazonaws\\.com/role-arn"
     value = module.efs_csi_irsa_role.iam_role_arn
   }
   set {
